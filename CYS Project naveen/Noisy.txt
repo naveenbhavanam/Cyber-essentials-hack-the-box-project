@@ -1,0 +1,19 @@
+HTB{mY_f4v0UR1t3_tr4nSF0rM_-_f0urIEr!!}
+
+import numpy as np
+from scipy.io.wavfile import read
+from scipy.fft import dst
+
+final_waveform = read("encrypted.wav")
+result = dst(final_waveform[1])
+amplitudes = result[result>10**5]
+amplitudes.sort()
+recovered = ""
+for a in amplitudes:
+ found = np.where(result==a)[0][0]
+ if(found%2 == 1):
+ c=round(found/20)
+ while c>128:
+ c//=4
+ recovered+=chr(c)
+print(recovered)
